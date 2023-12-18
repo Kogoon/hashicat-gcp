@@ -15,6 +15,21 @@ provider "google" {
   region  = var.region
 }
 
+module "vpc" {
+  source = "terraform-google-modules/network/google"
+  version = "3.4.0"
+
+  network_name = "gaurav-network"
+  project_id = var.project
+  subnets = [
+  {
+    subnet_name   = "gaurav-subnet"
+    subnet_ip     = "10.100.10.0/24"
+    subnet_region = var.region
+  }
+  ]
+}
+
 resource "google_compute_network" "hashicat" {
   name                    = "${var.prefix}-vpc-${var.region}"
   auto_create_subnetworks = false
